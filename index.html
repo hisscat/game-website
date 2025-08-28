@@ -362,7 +362,7 @@
     </div>
 
     <footer>
-        <p>© 2025 游戏时光 - 让游戏点亮生活</p>
+        <p>© 2025 gameweb beta</p>
     </footer>
 
     <script>
@@ -555,32 +555,31 @@
             // 为每个游戏卡片添加鼠标跟随3D效果
             function addMouseFollowEffect() {
                 document.querySelectorAll('.game-card').forEach(card => {
+                    // 防止重复绑定
+                    card.onmousemove = card.onmouseleave = null;
+
                     card.addEventListener('mousemove', (e) => {
                         const rect = card.getBoundingClientRect();
-                        const cardWidth = rect.width;
-                        const cardHeight = rect.height;
-                        
-                        // 计算鼠标在卡片中的相对位置 (0-1)
-                        const mouseX = (e.clientX - rect.left) / cardWidth;
-                        const mouseY = (e.clientY - rect.top) / cardHeight;
-                        
-                        // 计算旋转角度 (-15度 到 +15度)
-                        const rotateX = (mouseY - 0.5) * -30; // 上下翻转
-                        const rotateY = (mouseX - 0.5) * 30;  // 左右旋转
-                        
-                        // 应用变换
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+                        // 限制最大旋转角度为12度
+                        const maxAngle = 12;
+                        let rotateX = ((y / rect.height) - 0.5) * -24;
+                        let rotateY = ((x / rect.width) - 0.5) * 24;
+                        rotateX = Math.max(-maxAngle, Math.min(maxAngle, rotateX));
+                        rotateY = Math.max(-maxAngle, Math.min(maxAngle, rotateY));
+                        card.style.transition = 'transform 0.08s cubic-bezier(0.4,0,0.2,1)';
                         card.style.transform = `
-                            perspective(1000px) 
-                            rotateX(${rotateX}deg) 
-                            rotateY(${rotateY}deg) 
-                            scale(1.05)
-                            translateZ(10px)
+                            perspective(800px)
+                            rotateX(${rotateX}deg)
+                            rotateY(${rotateY}deg)
+                            scale(1.04)
                         `;
                     });
-                    
+
                     card.addEventListener('mouseleave', () => {
-                        // 鼠标离开时恢复原状
-                        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1) translateZ(0px)';
+                        card.style.transition = 'transform 0.3s cubic-bezier(0.4,0,0.2,1)';
+                        card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) scale(1)';
                     });
                 });
             }
