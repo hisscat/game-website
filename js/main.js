@@ -11,7 +11,7 @@
                 emoji: "🧩",
                 gradient: "linear-gradient(135deg, #667eea, #764ba2)",
                 image: "images/yujie.png",
-                url: "test.html" // 新增跳转链接
+                url: "yujie.html" // 新增跳转链接
             }
             
         ];
